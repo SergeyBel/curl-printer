@@ -1,0 +1,11 @@
+language: php
+
+php:
+  - 7.1
+
+before_script:
+  - composer install
+
+script:
+  - vendor/bin/php-cs-fixer src --dry-run
+  - vendor/bin/phpunit tests --colors --coverage-clover=coverage.xml

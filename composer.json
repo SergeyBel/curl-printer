@@ -1,0 +1,22 @@
+{
+    "name": "sergey-bel/curl-printer",
+    "description": "Print psr requests as curl command string",
+    "authors": [
+        {
+            "name": "Sergey Belov"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "CurlPrinter\\": "./src",
+            "CurlPrinter\\Tests\\": "./tests"
+        }
+    },
+
+    "require-dev": {
+        "guzzlehttp/guzzle": "7.0",
+        "monolog/monolog": "^2.1",
+        "phpunit/phpunit": "9",
+        "friendsofphp/php-cs-fixer": "^2.16"
+    }
+}
