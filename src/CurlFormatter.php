@@ -1,7 +1,6 @@
 <?php
 namespace CurlPrinter;
 
-
 /**
  * Class CurlFormatter
  * Format CurlData to curl command line string
