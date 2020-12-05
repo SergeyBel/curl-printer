@@ -1,4 +1,4 @@
-# curl-printer
+# curl-printer [![Build Status](https://travis-ci.com/SergeyBel/curl-printer.svg?branch=main)](https://travis-ci.com/SergeyBel/curl-printer)
 
 **curl-printer** is a library which allows you print php PSR-7 request as curl command line string. It is useful for logging and debugging
 
