@@ -13,10 +13,14 @@
         }
     },
 
+    "require": {
+        "php": ">=7.1"
+    },
+
     "require-dev": {
-        "guzzlehttp/guzzle": "7.0",
-        "monolog/monolog": "^2.1",
-        "phpunit/phpunit": "9",
+        "guzzlehttp/guzzle": ">=6.0",
+        "monolog/monolog": ">=1.1",
+        "phpunit/phpunit": ">=7",
         "friendsofphp/php-cs-fixer": "^2.16"
     }
 }

@@ -18,28 +18,28 @@ class CurlPrinterTest extends TestCase
     public function testSimpleGet()
     {
         $request = $this->createRequest('GET');
-        $answer = 'curl http://test.tst';
+        $answer = "curl http://test.tst";
         $this->assertSame($answer, $this->printer->printRequest($request));
     }
 
     public function testGetWithParams()
     {
         $request = $this->createRequest('GET', [], '', 'http://test.tst?param1=value1');
-        $answer = 'curl http://test.tst?param1=value1';
+        $answer = "curl http://test.tst?param1=value1";
         $this->assertSame($answer, $this->printer->printRequest($request));
     }
 
     public function testSimplePost()
     {
         $request = $this->createRequest('Post');
-        $answer = 'curl -X POST http://test.tst';
+        $answer = "curl -X POST http://test.tst";
         $this->assertSame($answer, $this->printer->printRequest($request));
     }
 
     public function testPostWithBody()
     {
         $request = $this->createRequest('POST', [], 'param1=value1&param2=value2');
-        $answer = 'curl -X POST http://test.tst -d "param1=value1&param2=value2"';
+        $answer = "curl -X POST http://test.tst -d 'param1=value1&param2=value2'";
         $this->assertSame($answer, $this->printer->printRequest($request));
     }
 
@@ -51,7 +51,18 @@ class CurlPrinterTest extends TestCase
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/xml'
             ]);
-        $answer = 'curl http://test.tst -H "Accept: application/json" -H "Content-Type: application/xml"';
+        $answer = "curl http://test.tst -H 'Accept: application/json' -H 'Content-Type: application/xml'";
+        $this->assertSame($answer, $this->printer->printRequest($request));
+    }
+
+    public function testPostJsonBody()
+    {
+        $request = $this->createRequest(
+            'POST',
+            [],
+            json_encode(['key' => 'value'])
+        );
+        $answer = "curl -X POST http://test.tst -d '{\"key\":\"value\"}'";
         $this->assertSame($answer, $this->printer->printRequest($request));
     }
 
