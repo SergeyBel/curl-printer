@@ -60,7 +60,7 @@ class CurlPrinterTest extends TestCase
         $request = $this->createRequest(
             'POST',
             [],
-            json_encode(['key' => 'value']),
+            json_encode(['key' => 'value'])
         );
         $answer = "curl -X POST http://test.tst -d '{\"key\":\"value\"}'";
         $this->assertSame($answer, $this->printer->printRequest($request));
