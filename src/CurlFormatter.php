@@ -48,7 +48,7 @@ class CurlFormatter
     {
         $body = $curlData->getBody();
         if (!empty($body)) {
-            $this->addNamedOption(CurlOptions::OPTION_BODY, '"'.$curlData->getBody().'"');
+            $this->addNamedOption(CurlOptions::OPTION_BODY, "'".$curlData->getBody()."'");
         }
     }
 
@@ -58,7 +58,7 @@ class CurlFormatter
 
         foreach ($headers as $name => $header) {
             if (!in_array($name, $this->skippedHeaders)) {
-                $this->addNamedOption(CurlOptions::OPTION_HEADER, '"'.$name.': '.$header[0].'"');
+                $this->addNamedOption(CurlOptions::OPTION_HEADER, "'".$name.': '.$header[0]."'");
             }
         }
     }
