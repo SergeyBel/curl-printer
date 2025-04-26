@@ -1,6 +1,7 @@
 # Curl printer
 
-**curl-printer** is a library which allows you print php PSR-7 request as curl command line string. It is useful for logging and debugging
+**curl-printer** is a library which allows you print request as curl command line string. It is useful for logging and debugging.
+Useful for PSR-7, Guzzle and custom Requests.
 
 ## Installation
 ```
