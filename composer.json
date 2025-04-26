@@ -18,9 +18,8 @@
     },
 
     "require-dev": {
-        "guzzlehttp/guzzle": ">=6.0",
-        "monolog/monolog": ">=1.1",
-        "phpunit/phpunit": ">=7",
-        "friendsofphp/php-cs-fixer": "^2.16"
+        "phpunit/phpunit": "^11",
+        "friendsofphp/php-cs-fixer": "^3.73",
+        "phpstan/phpstan": "^2.1"
     }
 }

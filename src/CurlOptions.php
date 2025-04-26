@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CurlPrinter;
 
 class CurlOptions
 {
-    const OPTION_METHOD = '-X';
-    const OPTION_BODY = '-d';
-    const OPTION_HEADER = '-H';
+    public const OPTION_METHOD = '-X';
+    public const OPTION_BODY = '-d';
+    public const OPTION_HEADER = '-H';
 }

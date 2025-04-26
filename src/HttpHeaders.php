@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CurlPrinter;
 
 class HttpHeaders
 {
-    const HEADER_HOST = 'Host';
+    public const HEADER_HOST = 'Host';
 }
