@@ -1,0 +1,9 @@
+services:
+  curl-printer:
+    build: "./docker"
+    container_name: curl-printer
+    volumes:
+      - ./:/app:rw
+    stdin_open: true
+    tty: true
+    working_dir: /app

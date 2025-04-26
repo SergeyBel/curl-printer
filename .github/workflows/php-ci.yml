@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Composer
+        run: |
+          composer install
+
+      - name: Code style
+        run: |
+          ./vendor/bin/php-cs-fixer fix --dry-run
+
+      - name: Static analysis
+        run: |
+          ./vendor/bin/phpstan analyze src -c phpstan.neon
+
+      - name: Tests
+        run: |
+          ./vendor/bin/phpunit tests
+
+
+    
