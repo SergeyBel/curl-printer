@@ -21,7 +21,8 @@ return $config->setRules([
     'no_unused_imports' => true,
     'linebreak_after_opening_tag' => true,
     'array_syntax' => ['syntax' => 'short'],
-    'declare_strict_types' => true
+    'declare_strict_types' => true,
+    'concat_space' => ['spacing' => 'one']
 
 ])
     ->setFinder($finder)

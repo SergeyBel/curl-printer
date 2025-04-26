@@ -4,41 +4,20 @@ declare(strict_types=1);
 
 namespace CurlPrinter;
 
-use Psr\Http\Message\RequestInterface;
+use CurlPrinter\Formatter\CurlFormatter;
 
-/**
- * Class CurlPrinter
- * Main class. Convert RequestInterface to curl command line string
- *
- * @package CurlPrinter
- */
 class CurlPrinter
 {
-    /** @var CurlExtractor */
-    private $extractor;
-
-    /** CurlFormatter */
-    private $formatter;
+    private CurlFormatter $formatter;
 
     public function __construct()
     {
-        $this->extractor = new CurlExtractor();
         $this->formatter = new CurlFormatter();
     }
 
-
-    public function printRequest(RequestInterface $request): string
+    public function print(RequestData $curlData): string
     {
-        $curlData = $this->extractor->extract($request);
         return $this->formatter->format($curlData);
-    }
-
-
-
-    public function setExtractor(CurlExtractor $extractor): self
-    {
-        $this->extractor = $extractor;
-        return $this;
     }
 
 

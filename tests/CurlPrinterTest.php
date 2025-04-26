@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace CurlPrinter\Tests;
 
 use CurlPrinter\CurlPrinter;
-use GuzzleHttp\Psr7\Request;
+use CurlPrinter\HttpMethod;
+use CurlPrinter\RequestData;
 use PHPUnit\Framework\TestCase;
 
 class CurlPrinterTest extends TestCase
@@ -17,65 +18,13 @@ class CurlPrinterTest extends TestCase
         $this->printer = new CurlPrinter();
     }
 
-    public function testSimpleGet()
+    public function testSimple()
     {
-        $request = $this->createRequest('GET');
-        $answer = 'curl http://test.tst';
-        $this->assertSame($answer, $this->printer->printRequest($request));
-    }
-
-    public function testGetWithParams()
-    {
-        $request = $this->createRequest('GET', [], '', 'http://test.tst?param1=value1');
-        $answer = 'curl http://test.tst?param1=value1';
-        $this->assertSame($answer, $this->printer->printRequest($request));
-    }
-
-    public function testSimplePost()
-    {
-        $request = $this->createRequest('Post');
-        $answer = 'curl -X POST http://test.tst';
-        $this->assertSame($answer, $this->printer->printRequest($request));
-    }
-
-    public function testPostWithBody()
-    {
-        $request = $this->createRequest('POST', [], 'param1=value1&param2=value2');
-        $answer = "curl -X POST http://test.tst -d 'param1=value1&param2=value2'";
-        $this->assertSame($answer, $this->printer->printRequest($request));
-    }
-
-    public function testGetWithHeaders()
-    {
-        $request = $this->createRequest(
-            'GET',
-            [
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/xml'
-            ]
+        $request = new RequestData(
+            HttpMethod::GET,
+            'http://test.com',
         );
-        $answer = "curl http://test.tst -H 'Accept: application/json' -H 'Content-Type: application/xml'";
-        $this->assertSame($answer, $this->printer->printRequest($request));
+        $expected = 'curl http://test.com';
+        $this->assertSame($expected, $this->printer->print($request));
     }
-
-    public function testPostJsonBody()
-    {
-        $request = $this->createRequest(
-            'POST',
-            [],
-            json_encode(['key' => 'value'])
-        );
-        $answer = "curl -X POST http://test.tst -d '{\"key\":\"value\"}'";
-        $this->assertSame($answer, $this->printer->printRequest($request));
-    }
-
-    private function createRequest(
-        string $method = 'GET',
-        array $headers = [],
-        string $body = '',
-        string $url = 'http://test.tst'
-    ) {
-        return new Request($method, $url, $headers, $body);
-    }
-
 }

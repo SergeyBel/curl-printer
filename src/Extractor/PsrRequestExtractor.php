@@ -2,26 +2,21 @@
 
 declare(strict_types=1);
 
-namespace CurlPrinter;
+namespace CurlPrinter\Extractor;
 
+use CurlPrinter\RequestData;
 use Psr\Http\Message\RequestInterface;
 
-/**
- * Class CurlExtractor
- * Extract request data from RequestInterface to CurlData
- *
- * @package CurlPrinter
- */
-class CurlExtractor
+class PsrRequestExtractor
 {
-    public function extract(RequestInterface $request): CurlData
+    public function extract(RequestInterface $request): RequestData
     {
-        $curlData = new CurlData();
-        $curlData
-            ->setMethod($this->extractMethod($request))
-            ->setUrl($this->extractUrl($request))
-            ->setHeaders($this->extractHeaders($request))
-            ->setBody($this->extractBody($request));
+        $curlData = new RequestData(
+            $this->extractMethod($request),
+            $this->extractUrl($request),
+            $this->extractHeaders($request),
+            $this->extractBody($request)
+        );
         return $curlData;
     }
 

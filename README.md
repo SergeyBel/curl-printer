@@ -28,7 +28,6 @@ echo $printer->printRequest($request);
 ```
 
 ## Guzzle middleware
-You can use **CurlPrinterMiddleware** for comfortable work with Guzzle (see [examples](https://github.com/SergeyBel/curl-printer/tree/main/examples)) 
 
 ```php
 $logger = // some LoggerInterface

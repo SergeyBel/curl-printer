@@ -4,34 +4,29 @@ declare(strict_types=1);
 
 namespace CurlPrinter;
 
-/**
- * Class CurlData
- * Dto for curl request parameters
- *
- * @package CurlPrinter
- */
-class CurlData
+class RequestData
 {
-    /** @var string */
-    private $method;
+    /**
+     * @param string $method
+     * @param string[][] $headers
+     */
+    public function __construct(
+        private HttpMethod $method,
+        private string $url,
+        private array $headers = [],
+        private string $body = ''
+    ) {
 
-    /** @var string */
-    private $url;
-
-    /** @var string[][] */
-    private $headers;
-
-    /** @var string */
-    private $body;
+    }
 
 
-    public function getMethod(): string
+    public function getMethod(): HttpMethod
     {
         return $this->method;
     }
 
 
-    public function setMethod(string $method): self
+    public function setMethod(HttpMethod $method): self
     {
         $this->method = $method;
         return $this;
