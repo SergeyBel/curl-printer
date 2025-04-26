@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CurlPrinter\Extractor;
 
+use CurlPrinter\HttpMethod;
 use CurlPrinter\RequestData;
 use Psr\Http\Message\RequestInterface;
 
@@ -20,11 +21,14 @@ class PsrRequestExtractor
         return $curlData;
     }
 
-    private function extractMethod(RequestInterface $request): string
+    private function extractMethod(RequestInterface $request): HttpMethod
     {
-        return $request->getMethod();
+        return HttpMethod::from(strtoupper($request->getMethod()));
     }
 
+    /**
+     * @return string[][]
+     */
     private function extractHeaders(RequestInterface $request): array
     {
         return $request->getHeaders();

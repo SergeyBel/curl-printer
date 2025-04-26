@@ -7,7 +7,6 @@ namespace CurlPrinter;
 class RequestData
 {
     /**
-     * @param string $method
      * @param string[][] $headers
      */
     public function __construct(
@@ -45,14 +44,16 @@ class RequestData
         return $this;
     }
 
-
+    /**
+     * @return string[][]
+     */
     public function getHeaders(): array
     {
         return $this->headers;
     }
 
     /**
-     * @param \string[][] $headers
+     * @param string[][] $headers
      */
     public function setHeaders(array $headers): self
     {

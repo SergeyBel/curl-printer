@@ -14,25 +14,25 @@ composer require sergey-bel/curl-printer
 use CurlPrinter\CurlPrinter;
 use GuzzleHttp\Psr7\Request;
 
-$request = new Request(
-    'POST',
-    'https://someapi.com/v2/user/create',
+$request = new RequestData(
+    HttpMethod::POST,
+    'https://someapi.com/user',
      [
        'Accept' => 'application/json',
      ],
-     'user_id=12345'
+     'id=12345'
 );
+
 $printer = new CurlPrinter();
-echo $printer->printRequest($request); 
-// curl -X POST https://someapi.com/v2/user/create -d 'user_id=12345' -H 'Accept: application/json'
+echo $printer->print($request); 
+// curl -X POST https://someapi.com/user -d 'id=12345' -H 'Accept: application/json'
 ```
 
 ## Guzzle middleware
 
 ```php
 $logger = // some LoggerInterface
-
-$stack = // Guzzle handler stack
+$stack = new HandlerStack();
 $stack->push(new CurlPrinterMiddleware($logger));
 $client = new Client(['handler' => $stack]);
 $client->post(...);

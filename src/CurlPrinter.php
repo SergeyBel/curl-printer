@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace CurlPrinter;
 
 use CurlPrinter\Formatter\CurlFormatter;
+use CurlPrinter\Formatter\FormatterInterface;
 
 class CurlPrinter
 {
-    private CurlFormatter $formatter;
+    private FormatterInterface $formatter;
 
     public function __construct()
     {
@@ -20,8 +21,7 @@ class CurlPrinter
         return $this->formatter->format($curlData);
     }
 
-
-    public function setFormatter(CurlFormatter $formatter)
+    public function setFormatter(FormatterInterface $formatter): self
     {
         $this->formatter = $formatter;
         return $this;

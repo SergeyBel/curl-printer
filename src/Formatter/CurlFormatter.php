@@ -7,12 +7,15 @@ namespace CurlPrinter\Formatter;
 use CurlPrinter\RequestData;
 use CurlPrinter\HttpMethod;
 
-class CurlFormatter implements FormaterInterface
+class CurlFormatter implements FormatterInterface
 {
     public const METHOD_OPTION = '-X';
     public const BODY_OPTION = '-d';
     public const HEADER_OPTION = '-H';
 
+    /**
+     * @var array<string>
+     */
     private array $command;
 
     public function __construct()
@@ -44,12 +47,14 @@ class CurlFormatter implements FormaterInterface
 
     protected function addBody(string $body): void
     {
-        ;
         if (strlen($body) > 0) {
             $this->addNamedOption(self::BODY_OPTION, "'" . $body . "'");
         }
     }
 
+    /**
+     * @param string[][] $headers
+     */
     protected function addHeaders(array $headers): void
     {
 

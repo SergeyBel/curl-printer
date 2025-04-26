@@ -6,7 +6,7 @@ namespace CurlPrinter\Formatter;
 
 use CurlPrinter\RequestData;
 
-interface FormaterInterface
+interface FormatterInterface
 {
     public function format(RequestData $request): string;
 }
