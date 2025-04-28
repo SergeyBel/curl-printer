@@ -32,8 +32,9 @@ class FormatterSettings
         return $this->multiline;
     }
 
-    public function setMultiline(bool $multiline): void
+    public function setMultiline(): self
     {
-        $this->multiline = $multiline;
+        $this->multiline = true;
+        return $this;
     }
 }

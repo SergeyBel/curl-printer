@@ -12,10 +12,8 @@ class LineOption
     ) {
     }
 
-    /**
-     * @return array<string>
-     */
-    public function getArray(): array
+
+    public function getString(): string
     {
         $option = [];
         if (!is_null($this->name)) {
@@ -24,6 +22,6 @@ class LineOption
 
         $option[] = $this->value;
 
-        return $option;
+        return implode(' ', $option);
     }
 }

@@ -104,6 +104,32 @@ class CurlFormatterTest extends TestCase
         $this->assertSame($expected, $this->formatter->format($request));
     }
 
+    public function testMultiline()
+    {
+        $options = (new FormatterSettings())
+            ->setMultiline();
+
+        $this->formatter->setOptions($options);
+        $request = $this->createRequest(
+            HttpMethod::POST,
+            'http://test.com',
+            [
+                'Accept' => 'json',
+                'Agent' => 'chrome'
+            ],
+            'key=value'
+        );
+        $expected =
+        <<<EOD
+        curl -X POST http://test.com \
+        -H 'Accept: json' \
+        -H 'Agent: chrome' \
+        -d 'key=value'
+        EOD;
+
+        $this->assertSame($expected, $this->formatter->format($request));
+    }
+
     private function createRequest(
         HttpMethod $method,
         string $url,

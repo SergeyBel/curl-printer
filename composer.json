@@ -22,6 +22,7 @@
         "phpunit/phpunit": "^11",
         "friendsofphp/php-cs-fixer": "^3.73",
         "phpstan/phpstan": "^2.1",
-        "guzzlehttp/guzzle": "^7.9"
+        "guzzlehttp/guzzle": "^7.9",
+        "symfony/var-dumper": "^7.2"
     }
 }

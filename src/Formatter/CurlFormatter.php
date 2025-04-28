@@ -30,12 +30,9 @@ class CurlFormatter implements FormatterInterface
 
         $text = $this->formatCommand($methodPart, $urlPart, $headersPart, $bodyPart);
 
-        $replacedText = str_replace(
-            array_keys($this->options->getReplaces()),
-            array_values($this->options->getReplaces()),
-            $text
-        );
-        return $replacedText;
+        return $this->applyReplace($text);
+
+
     }
 
     public function setOptions(FormatterSettings $options): self
@@ -69,7 +66,7 @@ class CurlFormatter implements FormatterInterface
 
     /**
      * @param string[][] $headers
-     * @return array<LineOption> $headers
+     * @return array<LineOption>
      */
     protected function getHeadersPart(array $headers): array
     {
@@ -92,23 +89,39 @@ class CurlFormatter implements FormatterInterface
         array $headersPart,
         ?LineOption $bodyPart
     ): string {
-        $command = ['curl'];
+        $startPart = ['curl'];
 
         if (!is_null($methodPart)) {
-            $command = array_merge($command, $methodPart->getArray());
+            $startPart = array_merge($startPart, [$methodPart->getString()]);
         }
 
-        $command = array_merge($command, $urlPart->getArray());
+        $startPart = array_merge($startPart, [$urlPart->getString()]);
+
+        $command = [implode(' ', $startPart)];
 
         foreach ($headersPart as $header) {
-            $command = array_merge($command, $header->getArray());
+            $command = array_merge($command, [$header->getString()]);
         }
 
         if (!is_null($bodyPart)) {
-            $command = array_merge($command, $bodyPart->getArray());
+            $command = array_merge($command, [$bodyPart->getString()]);
         }
 
-        return implode(' ', $command);
+        $separator = ' ';
+        if ($this->options->isMultiline()) {
+            $separator = " \\\n";
+        }
+
+        return implode($separator, $command);
+    }
+
+    private function applyReplace(string $command): string
+    {
+        return str_replace(
+            array_keys($this->options->getReplaces()),
+            array_values($this->options->getReplaces()),
+            $command
+        );
     }
 
 }
