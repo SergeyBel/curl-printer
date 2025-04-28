@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CurlPrinter\Tests\Formatter;
 
 use CurlPrinter\Formatter\CurlFormatter;
-use CurlPrinter\Formatter\FormatterOptions;
+use CurlPrinter\Formatter\FormatterSettings;
 use CurlPrinter\HttpMethod;
 use CurlPrinter\RequestData;
 use PHPUnit\Framework\TestCase;
@@ -90,7 +90,7 @@ class CurlFormatterTest extends TestCase
 
     public function testReplaces()
     {
-        $options = (new FormatterOptions())
+        $options = (new FormatterSettings())
             ->addReplaced('api_key', '******');
 
         $this->formatter->setOptions($options);

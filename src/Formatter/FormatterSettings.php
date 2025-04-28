@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace CurlPrinter\Formatter;
 
-class FormatterOptions
+class FormatterSettings
 {
     /**
      * @var array<string, string>
      */
     private array $replaces = [];
+
+    private bool $multiline = false;
 
     /**
      * @return array<string, string>
@@ -25,6 +27,13 @@ class FormatterOptions
         return $this;
     }
 
+    public function isMultiline(): bool
+    {
+        return $this->multiline;
+    }
 
-
+    public function setMultiline(bool $multiline): void
+    {
+        $this->multiline = $multiline;
+    }
 }

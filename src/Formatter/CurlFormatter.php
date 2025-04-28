@@ -13,27 +13,22 @@ class CurlFormatter implements FormatterInterface
     public const BODY_OPTION = '-d';
     public const HEADER_OPTION = '-H';
 
-    /**
-     * @var array<string>
-     */
-    private array $command;
 
-    private FormatterOptions $options;
+    private FormatterSettings $options;
 
     public function __construct()
     {
-        $this->options = new FormatterOptions();
+        $this->options = new FormatterSettings();
     }
 
     public function format(RequestData $request): string
     {
-        $this->command = ['curl'];
-        $this->addMethod($request->getMethod());
-        $this->addUrl($request->getUrl());
-        $this->addBody($request->getBody());
-        $this->addHeaders($request->getHeaders());
+        $methodPart = $this->getMethodPart($request->getMethod());
+        $urlPart = $this->getUrlPart($request->getUrl());
+        $headersPart = $this->getHeadersPart($request->getHeaders());
+        $bodyPart = $this->getBodyPart($request->getBody());
 
-        $text = implode(' ', $this->command);
+        $text = $this->formatCommand($methodPart, $urlPart, $headersPart, $bodyPart);
 
         $replacedText = str_replace(
             array_keys($this->options->getReplaces()),
@@ -43,51 +38,77 @@ class CurlFormatter implements FormatterInterface
         return $replacedText;
     }
 
-    public function setOptions(FormatterOptions $options): self
+    public function setOptions(FormatterSettings $options): self
     {
         $this->options = $options;
         return $this;
     }
 
 
-    protected function addMethod(HttpMethod $method): void
+    protected function getMethodPart(HttpMethod $method): ?LineOption
     {
         if ($method !== HttpMethod::GET) {
-            $this->addNamedOption(self::METHOD_OPTION, $method->value);
+            return new LineOption($method->value, self::METHOD_OPTION);
         }
+        return null;
     }
 
-    protected function addUrl(string $url): void
+    protected function getUrlPart(string $url): LineOption
     {
-        $this->addOption($url);
+        return new LineOption($url);
     }
 
-    protected function addBody(string $body): void
+    protected function getBodyPart(string $body): ?LineOption
     {
         if (strlen($body) > 0) {
-            $this->addNamedOption(self::BODY_OPTION, "'" . $body . "'");
+            return new LineOption("'" . $body . "'", self::BODY_OPTION);
+
         }
+        return null;
     }
 
     /**
-     * @param array<string, array<string>> $headers
+     * @param string[][] $headers
+     * @return array<LineOption> $headers
      */
-    protected function addHeaders(array $headers): void
+    protected function getHeadersPart(array $headers): array
     {
+        $headersPart = [];
         foreach ($headers as $name => $value) {
             $textValue = implode(',', $value);
-            $this->addNamedOption(self::HEADER_OPTION, "'" . $name . ': ' . $textValue . "'");
+            $headersPart[] = new LineOption("'" . $name . ': ' . $textValue . "'", self::HEADER_OPTION);
+
         }
+
+        return $headersPart;
     }
 
-    protected function addNamedOption(string $name, string $value): void
-    {
-        $this->command[] = $name;
-        $this->command[] = $value;
+    /**
+     * @param array<LineOption> $headersPart
+     */
+    private function formatCommand(
+        ?LineOption $methodPart,
+        LineOption $urlPart,
+        array $headersPart,
+        ?LineOption $bodyPart
+    ): string {
+        $command = ['curl'];
+
+        if (!is_null($methodPart)) {
+            $command = array_merge($command, $methodPart->getArray());
+        }
+
+        $command = array_merge($command, $urlPart->getArray());
+
+        foreach ($headersPart as $header) {
+            $command = array_merge($command, $header->getArray());
+        }
+
+        if (!is_null($bodyPart)) {
+            $command = array_merge($command, $bodyPart->getArray());
+        }
+
+        return implode(' ', $command);
     }
 
-    protected function addOption(string $value): void
-    {
-        $this->command[] = $value;
-    }
 }
