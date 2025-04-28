@@ -9,4 +9,6 @@ use CurlPrinter\RequestData;
 interface FormatterInterface
 {
     public function format(RequestData $request): string;
+
+    public function setOptions(FormatterOptions $options): self;
 }

@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CurlPrinter\Tests\Printer;
+namespace CurlPrinter\Tests\Formatter;
 
 use CurlPrinter\Formatter\CurlFormatter;
+use CurlPrinter\Formatter\FormatterOptions;
 use CurlPrinter\HttpMethod;
 use CurlPrinter\RequestData;
 use PHPUnit\Framework\TestCase;
@@ -68,6 +69,38 @@ class CurlFormatterTest extends TestCase
     {
         $request = $this->createRequest(HttpMethod::DELETE, 'http://test.com');
         $expected = 'curl -X DELETE http://test.com';
+        $this->assertSame($expected, $this->formatter->format($request));
+    }
+
+    public function testHeaders()
+    {
+        $request = $this->createRequest(
+            HttpMethod::POST,
+            'http://test.com',
+            [
+                'Accept' => 'html',
+                'Multi' => ['one', 'two']
+            ],
+            ''
+        );
+        $expected = "curl -X POST http://test.com -H 'Accept: html' -H 'Multi: one,two'";
+        $this->assertSame($expected, $this->formatter->format($request));
+    }
+
+
+    public function testReplaces()
+    {
+        $options = (new FormatterOptions())
+            ->addReplaced('api_key', '******');
+
+        $this->formatter->setOptions($options);
+        $request = $this->createRequest(
+            HttpMethod::GET,
+            'http://test.com',
+            ['Authorization' => 'api_key'],
+            ''
+        );
+        $expected = "curl http://test.com -H 'Authorization: ******'";
         $this->assertSame($expected, $this->formatter->format($request));
     }
 

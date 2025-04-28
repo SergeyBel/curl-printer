@@ -7,17 +7,21 @@ namespace CurlPrinter;
 class RequestData
 {
     /**
-     * @param string[][] $headers
+     * @var string[][]
+     */
+    private array $headers = [];
+    /**
+     * @param array<string, string|array<string>> $headers
      */
     public function __construct(
         private HttpMethod $method,
         private string $url,
-        private array $headers = [],
+        array $headers = [],
         private string $body = ''
     ) {
+        $this->setHeaders($headers);
 
     }
-
 
     public function getMethod(): HttpMethod
     {
@@ -53,13 +57,14 @@ class RequestData
     }
 
     /**
-     * @param string[][] $headers
+     * @param array<string, string|array<string>> $headers
      */
     public function setHeaders(array $headers): self
     {
-        $this->headers = $headers;
+        $this->headers = $this->formatHeaders($headers);
         return $this;
     }
+
 
 
     public function getBody(): string
@@ -71,5 +76,23 @@ class RequestData
     {
         $this->body = $body;
         return $this;
+    }
+
+    /**
+     * @param array<string, string|array<string>> $headers
+     * @return string[][]
+     */
+    private function formatHeaders(array $headers): array
+    {
+        $formedHeaders = [];
+        foreach ($headers as $key => $value) {
+            if (is_string($value)) {
+                $formedHeaders[$key] = [$value];
+            } else {
+                $formedHeaders[$key] = $value;
+            }
+        }
+
+        return $formedHeaders;
     }
 }

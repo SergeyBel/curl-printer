@@ -18,8 +18,11 @@ class CurlFormatter implements FormatterInterface
      */
     private array $command;
 
+    private FormatterOptions $options;
+
     public function __construct()
     {
+        $this->options = new FormatterOptions();
     }
 
     public function format(RequestData $request): string
@@ -30,8 +33,22 @@ class CurlFormatter implements FormatterInterface
         $this->addBody($request->getBody());
         $this->addHeaders($request->getHeaders());
 
-        return implode(' ', $this->command);
+        $text = implode(' ', $this->command);
+
+        $replacedText = str_replace(
+            array_keys($this->options->getReplaces()),
+            array_values($this->options->getReplaces()),
+            $text
+        );
+        return $replacedText;
     }
+
+    public function setOptions(FormatterOptions $options): self
+    {
+        $this->options = $options;
+        return $this;
+    }
+
 
     protected function addMethod(HttpMethod $method): void
     {
@@ -53,13 +70,13 @@ class CurlFormatter implements FormatterInterface
     }
 
     /**
-     * @param string[][] $headers
+     * @param array<string, array<string>> $headers
      */
     protected function addHeaders(array $headers): void
     {
-
-        foreach ($headers as $name => $header) {
-            $this->addNamedOption(self::HEADER_OPTION, "'" . $name . ': ' . $header[0] . "'");
+        foreach ($headers as $name => $value) {
+            $textValue = implode(',', $value);
+            $this->addNamedOption(self::HEADER_OPTION, "'" . $name . ': ' . $textValue . "'");
         }
     }
 
