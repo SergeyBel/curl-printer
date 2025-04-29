@@ -58,7 +58,7 @@ class CurlFormatter implements FormatterInterface
     protected function getBodyPart(string $body): ?LineOption
     {
         if (strlen($body) > 0) {
-            return new LineOption("'" . $body . "'", self::BODY_OPTION);
+            return new LineOption($this->options->getQuotes() . $body . $this->options->getQuotes(), self::BODY_OPTION);
 
         }
         return null;
@@ -73,7 +73,7 @@ class CurlFormatter implements FormatterInterface
         $headersPart = [];
         foreach ($headers as $name => $value) {
             $textValue = implode(',', $value);
-            $headersPart[] = new LineOption("'" . $name . ': ' . $textValue . "'", self::HEADER_OPTION);
+            $headersPart[] = new LineOption($this->options->getQuotes() . $name . ': ' . $textValue . $this->options->getQuotes(), self::HEADER_OPTION);
 
         }
 

@@ -13,6 +13,8 @@ class FormatterSettings
 
     private bool $multiline = false;
 
+    private string $quotes = "'";
+
     /**
      * @return array<string, string>
      */
@@ -37,4 +39,17 @@ class FormatterSettings
         $this->multiline = true;
         return $this;
     }
+
+    public function getQuotes(): string
+    {
+        return $this->quotes;
+    }
+
+    public function setQuotes(string $quotes): self
+    {
+        $this->quotes = $quotes;
+        return $this;
+    }
+
+
 }

@@ -81,7 +81,6 @@ class CurlFormatterTest extends TestCase
                 'Accept' => 'html',
                 'Multi' => ['one', 'two']
             ],
-            ''
         );
         $expected = "curl -X POST http://test.com -H 'Accept: html' -H 'Multi: one,two'";
         $this->assertSame($expected, $this->formatter->format($request));
@@ -127,6 +126,16 @@ class CurlFormatterTest extends TestCase
         -d 'key=value'
         EOD;
 
+        $this->assertSame($expected, $this->formatter->format($request));
+    }
+
+    public function testQuotes()
+    {
+        $options = (new FormatterSettings())
+            ->setQuotes('"');
+        $this->formatter->setOptions($options);
+        $request = $this->createRequest(HttpMethod::POST, 'http://test.com', body: 'key=value');
+        $expected = 'curl -X POST http://test.com -d "key=value"';
         $this->assertSame($expected, $this->formatter->format($request));
     }
 
