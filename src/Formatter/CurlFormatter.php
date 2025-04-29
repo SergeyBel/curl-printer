@@ -14,11 +14,11 @@ class CurlFormatter implements FormatterInterface
     public const HEADER_OPTION = '-H';
 
 
-    private FormatterSettings $options;
+    private FormatterSettings $settings;
 
     public function __construct()
     {
-        $this->options = new FormatterSettings();
+        $this->settings = new FormatterSettings();
     }
 
     public function format(RequestData $request): string
@@ -35,9 +35,9 @@ class CurlFormatter implements FormatterInterface
 
     }
 
-    public function setOptions(FormatterSettings $options): self
+    public function setSettings(FormatterSettings $settings): self
     {
-        $this->options = $options;
+        $this->settings = $settings;
         return $this;
     }
 
@@ -58,7 +58,7 @@ class CurlFormatter implements FormatterInterface
     protected function getBodyPart(string $body): ?LineOption
     {
         if (strlen($body) > 0) {
-            return new LineOption($this->options->getQuotes() . $body . $this->options->getQuotes(), self::BODY_OPTION);
+            return new LineOption($this->settings->getQuotes() . $body . $this->settings->getQuotes(), self::BODY_OPTION);
 
         }
         return null;
@@ -73,7 +73,7 @@ class CurlFormatter implements FormatterInterface
         $headersPart = [];
         foreach ($headers as $name => $value) {
             $textValue = implode(',', $value);
-            $headersPart[] = new LineOption($this->options->getQuotes() . $name . ': ' . $textValue . $this->options->getQuotes(), self::HEADER_OPTION);
+            $headersPart[] = new LineOption($this->settings->getQuotes() . $name . ': ' . $textValue . $this->settings->getQuotes(), self::HEADER_OPTION);
 
         }
 
@@ -108,7 +108,7 @@ class CurlFormatter implements FormatterInterface
         }
 
         $separator = ' ';
-        if ($this->options->isMultiline()) {
+        if ($this->settings->isMultiline()) {
             $separator = " \\\n";
         }
 
@@ -118,8 +118,8 @@ class CurlFormatter implements FormatterInterface
     private function applyReplace(string $command): string
     {
         return str_replace(
-            array_keys($this->options->getReplaces()),
-            array_values($this->options->getReplaces()),
+            array_keys($this->settings->getReplaces()),
+            array_values($this->settings->getReplaces()),
             $command
         );
     }

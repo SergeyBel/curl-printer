@@ -6,6 +6,7 @@ namespace CurlPrinter;
 
 use CurlPrinter\Formatter\CurlFormatter;
 use CurlPrinter\Formatter\FormatterInterface;
+use CurlPrinter\Formatter\FormatterSettings;
 
 class CurlPrinter
 {
@@ -24,6 +25,12 @@ class CurlPrinter
     public function setFormatter(FormatterInterface $formatter): self
     {
         $this->formatter = $formatter;
+        return $this;
+    }
+
+    public function setSettings(FormatterSettings $settings): self
+    {
+        $this->formatter->setSettings($settings);
         return $this;
     }
 }

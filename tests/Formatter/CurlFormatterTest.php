@@ -89,10 +89,10 @@ class CurlFormatterTest extends TestCase
 
     public function testReplaces()
     {
-        $options = (new FormatterSettings())
+        $settings = (new FormatterSettings())
             ->addReplaced('api_key', '******');
 
-        $this->formatter->setOptions($options);
+        $this->formatter->setSettings($settings);
         $request = $this->createRequest(
             HttpMethod::GET,
             'http://test.com',
@@ -105,10 +105,10 @@ class CurlFormatterTest extends TestCase
 
     public function testMultiline()
     {
-        $options = (new FormatterSettings())
+        $settings = (new FormatterSettings())
             ->setMultiline();
 
-        $this->formatter->setOptions($options);
+        $this->formatter->setSettings($settings);
         $request = $this->createRequest(
             HttpMethod::POST,
             'http://test.com',
@@ -131,9 +131,9 @@ class CurlFormatterTest extends TestCase
 
     public function testQuotes()
     {
-        $options = (new FormatterSettings())
+        $settings = (new FormatterSettings())
             ->setQuotes('"');
-        $this->formatter->setOptions($options);
+        $this->formatter->setSettings($settings);
         $request = $this->createRequest(HttpMethod::POST, 'http://test.com', body: 'key=value');
         $expected = 'curl -X POST http://test.com -d "key=value"';
         $this->assertSame($expected, $this->formatter->format($request));

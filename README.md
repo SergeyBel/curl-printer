@@ -24,7 +24,7 @@ $request = new RequestData(
 
 $printer = new CurlPrinter();
 echo $printer->print($request); 
-// curl -X POST https://someapi.com/user -d 'id=12345' -H 'Accept: application/json'
+// curl -X POST https://someapi.com/user -H 'Accept: application/json' -d 'id=12345'
 ```
 
 
@@ -47,4 +47,23 @@ $stack = new HandlerStack();
 $stack->push(new CurlPrinterMiddleware($logger));
 $client = new Client(['handler' => $stack]);
 $client->send(...);
+```
+
+### Settings
+Formatting settings are available in the `FormatterSettings` class
+
+```php
+$settings = (new FormatterSettings())
+            ->setQuotes('"');
+$request = new RequestData(
+    HttpMethod::POST,
+    'https://someapi.com/user',
+     [
+       'Accept' => 'application/json',
+     ],
+     'id=12345'
+);
+$printer = (new CurlPrinter())->setSettings($settings);
+echo $printer->print($request); 
+// curl -X POST https://someapi.com/user -H "Accept: application/json" -d "id=12345" 
 ```

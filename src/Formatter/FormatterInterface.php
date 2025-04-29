@@ -10,5 +10,5 @@ interface FormatterInterface
 {
     public function format(RequestData $request): string;
 
-    public function setOptions(FormatterSettings $options): self;
+    public function setSettings(FormatterSettings $settings): self;
 }
